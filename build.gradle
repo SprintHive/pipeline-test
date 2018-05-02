@@ -3,7 +3,6 @@ buildscript {
         springBootVersion = '2.0.1.RELEASE'
     }
     repositories {
-        mavenLocal()
         mavenCentral()
     }
     dependencies {
@@ -25,7 +24,6 @@ bootJar {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven { url "https://repo.spring.io/milestone" }
 }
