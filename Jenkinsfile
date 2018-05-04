@@ -25,7 +25,7 @@ gradleNode(label: 'gradle-and-docker') {
         }
 
         versionTag = getNewVersion {}
-        dockerImage = "${componentName}:${versionTag}"
+        dockerImage = "eu.gcr.io/jons-world/$componentName:${versionTag}"
 
         container(name: 'gradle') {
             sh "gradle bootJar"
@@ -34,7 +34,11 @@ gradleNode(label: 'gradle-and-docker') {
 
     stage('Publish docker image') {
         container('docker') {
-            sh "docker build -t ${dockerImage} ."
+            docker.withRegistry("https://eu.gcr.io", "gcr:honeypot-gcr-credentials") {
+                sh "docker build -t ${dockerImage} ."
+                docker.image(dockerImage).push()
+                docker.image(dockerImage).push('latest')
+            }
         }
     }
 
